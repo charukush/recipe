@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -49,5 +50,47 @@ public class CategoryController {
 		model.addAttribute("message", "New category cretaed");
 		return "message";
 	}
-
+	
+	@RequestMapping(value = "/upadecategoryform", method = RequestMethod.POST)
+	public String categoryupdateform(@ModelAttribute CategoryWebEntity categoryWebEntity, Model model) {
+		CategoryEntity categoryEntity = new CategoryEntity();
+		categoryEntity.setId(categoryWebEntity.getId());
+		categoryEntity.setName(categoryWebEntity.getName());
+		CategoryEntity parent = categoryDao.get(categoryWebEntity.getParent());
+		categoryEntity.setParent(parent);
+		categoryDao.update(categoryEntity);
+		model.addAttribute("message", "Category Updated");
+		return "message";
+	}
+	
+	/**
+	 * Category delete 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/delete-{id}")
+	public String categorydelete(@PathVariable Long id, Model model) {
+		CategoryEntity categoryEntity = categoryDao.get(id);
+		categoryDao.delete(categoryEntity);
+		model.addAttribute("message", "Category deleted");
+		return "message";
+	}
+	
+	/**
+	 * Category Update
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/edit-{id}")
+	public String categoryupdate(@PathVariable Long id, Model model) {
+		CategoryEntity categoryEntity = categoryDao.get(id);
+		List<CategoryEntity> categoryEntities = categoryDao.getAll();
+		model.addAttribute("command",categoryEntity);
+		model.addAttribute("categories",categoryEntities);
+		model.addAttribute("action","upadecategoryform");
+		return "category";
+	}
+	
 }

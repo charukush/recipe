@@ -1,46 +1,28 @@
-package com.charu.recipe.entity;
+package com.charu.recipe.entity.web;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
-@Entity
-@Table(name = "recipe")
-public class RecipeEntity {
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class RecipeWebEntity {
 	
-	@Id
-	@GeneratedValue
 	private Long idrecipe;
 	
-	@Column(name = "title")
+	@Size(min=5, max=30, message="Title should be > 5 and < 30 characters in length.")
 	private String title;
 	
-	@Column(name = "displaymsg")
+	@NotEmpty( message="Display message should not be blank")
 	private String displaymsg;
 	
-	@Column(name = "instruction")
 	private String instruction;
 	
-	@Column(name = "cookingtime")
 	private String cookingtime;
 	
-	@ManyToOne
-	@JoinColumn
-	private CategoryEntity cookingcategory;
-	
-	@Column(name = "cuisine")
-	private String cuisine;
-	
-	@Column(name = "ingredients")
-	private String ingredients;
-
-	public RecipeEntity() {
-		
-	}
+    private Long cookingcategory;
+    
+    private String cuisine;
+    
+    private String ingredients;
 
 	public Long getIdrecipe() {
 		return idrecipe;
@@ -82,11 +64,11 @@ public class RecipeEntity {
 		this.cookingtime = cookingtime;
 	}
 
-	public CategoryEntity getCookingcategory() {
+	public Long getCookingcategory() {
 		return cookingcategory;
 	}
 
-	public void setCookingcategory(CategoryEntity cookingcategory) {
+	public void setCookingcategory(Long cookingcategory) {
 		this.cookingcategory = cookingcategory;
 	}
 
@@ -108,13 +90,13 @@ public class RecipeEntity {
 
 	@Override
 	public String toString() {
-		return "RecipeEntity [idrecipe=" + idrecipe + ", title=" + title
+		return "RecipeWebEntity [idrecipe=" + idrecipe + ", title=" + title
 				+ ", displaymsg=" + displaymsg + ", instruction=" + instruction
 				+ ", cookingtime=" + cookingtime + ", cookingcategory="
 				+ cookingcategory + ", cuisine=" + cuisine + ", ingredients="
 				+ ingredients + "]";
 	}
-	
-	
+    
+    
 
 }

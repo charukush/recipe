@@ -8,7 +8,7 @@
 </head>
 <body>
 <h2> Create New Category</h2>
-<form:form method="POST" action="newcategorysubmit">
+<form:form method="POST" action="${action}">
 	<form:hidden path="id"/>
    <table>
     <tr>
@@ -20,7 +20,7 @@
         <td><form:label path="parent">Parent</form:label></td>
         <td>
         	<form:select path="parent">
-	        	<form:option value="" label="--- Select ---"/>
+	        	<form:option value="-1" label="--- Select ---"/>
 	    		<form:options items="${categories}" itemValue="id" itemLabel="name" />
 			</form:select>
 		</td>

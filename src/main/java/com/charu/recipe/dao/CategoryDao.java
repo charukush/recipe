@@ -39,10 +39,34 @@ public class CategoryDao {
 		List<CategoryEntity> categoryEntities =  criteria.list();
 		return categoryEntities;
 	}
-	
+	/**
+	 * Method to get id
+	 * @param id
+	 * @return
+	 */
 	@Transactional
 	public CategoryEntity get(Long id){
 		Session session = sessionFactory.getCurrentSession();
 		return (CategoryEntity) session.get(CategoryEntity.class, id);
+	}
+	/**
+	 * Method to delete category
+	 * @param categoryEntity
+	 */
+	
+	@Transactional
+	public void delete(CategoryEntity categoryEntity) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(categoryEntity);
+	}
+	/**
+	 * Method to update Category
+	 * @param categoryEntity
+	 * @return
+	 */
+	@Transactional
+	public CategoryEntity update(CategoryEntity categoryEntity) {
+		Session session = sessionFactory.getCurrentSession();
+		return (CategoryEntity) session.merge(categoryEntity);
 	}
 }

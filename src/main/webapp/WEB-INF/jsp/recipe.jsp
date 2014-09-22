@@ -13,11 +13,11 @@
    <table>
     <tr>
         <td><form:label path="title">Title</form:label></td>
-        <td><form:input path="title" /></td>
+        <td><form:input path="title" /> <form:errors path="title" cssclass="error"></form:errors></td>
     </tr>
     <tr>
         <td><form:label path="displaymsg">Display Message</form:label></td>
-        <td><form:input path="displaymsg" /></td>
+        <td><form:input path="displaymsg" /><form:errors path="displaymsg"></form:errors></td>
     </tr>
     <tr>
         <td><form:label path="instruction">Instruction</form:label></td>
@@ -29,7 +29,11 @@
     </tr>
     <tr>
         <td><form:label path="cookingcategory">Cooking Category</form:label></td>
-        <td><form:input path="cookingcategory" /></td>
+        <td>
+        	<form:select path="cookingcategory">
+        		<form:options items="${categorylist}" itemValue="id" itemLabel="name" />
+        	</form:select>
+        </td>
     </tr>
     <tr>
         <td><form:label path="cuisine">Cuisine</form:label></td>

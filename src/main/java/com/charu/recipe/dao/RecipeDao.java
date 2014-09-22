@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.charu.recipe.entity.RecipeEntity;
-import com.charu.recipe.entity.UserEntity;
 
 @Repository
 public class RecipeDao {
@@ -21,7 +20,7 @@ public class RecipeDao {
 	private SessionFactory sessionFactory;
 	
 	/**
-	 * Create Recipe meathod
+	 * Create Recipe method
 	 * @param recipeEntity
 	 * @return
 	 */
@@ -49,7 +48,6 @@ public class RecipeDao {
 	public RecipeEntity update(RecipeEntity recipeEntity) {
 		Session session = sessionFactory.getCurrentSession();
 		return (RecipeEntity) session.merge(recipeEntity);
-		
 	}
 	/**
 	 * 
@@ -59,13 +57,12 @@ public class RecipeDao {
 	public void delete(RecipeEntity recipeEntity){
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(recipeEntity);
-	
-		
 	}
-/**
- * Method to display all recipes 
- * @return
- */
+	
+	/**
+	 * Method to display all recipes 
+	 * @return
+	 */
 	@Transactional
 	public List<RecipeEntity> selectAllRecipes(){
 		Session session = sessionFactory.getCurrentSession();
@@ -73,4 +70,6 @@ public class RecipeDao {
 		List<RecipeEntity> recipeEntities = (List<RecipeEntity>) criteria.list();
 		return recipeEntities;
 	}
+	
+
 }

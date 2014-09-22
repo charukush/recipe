@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p" 
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-    <context:component-scan base-package="com.charu.recipe"/>
+	<context:component-scan base-package="com.charu.recipe" />
+	 <mvc:annotation-driven />
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 
-    <bean id="viewResolver"
-      class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-    <property name="prefix" value="/WEB-INF/jsp/"/>
-    <property name="suffix" value=".jsp"/>
-</bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" p:driverClassName="com.mysql.jdbc.Driver"
+		p:url="jdbc:mysql://localhost:3306/recipe" p:username="root"
+		p:password="">
+	</bean>
 
-     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-	        p:driverClassName="com.mysql.jdbc.Driver"
-	        p:url="jdbc:mysql://localhost:3306/recipe" p:username="root"
-	        p:password="">
-        </bean>
-        
-        	      	<!-- Hibernate session factory -->
-	<bean id="sessionFactory" 
-	class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-	 
-	    <property name="dataSource">
-	      <ref bean="dataSource"/>
-	    </property>
-	 
-	    <property name="hibernateProperties">
-	       <props>
-	         <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-	         <prop key="hibernate.show_sql">true</prop>
-	         <prop key="hibernate.hbm2ddl.auto">update</prop>
-	       </props>
-	    </property>
-	 
-	    <property name="annotatedClasses">
-		<list>
-			<value>com.charu.recipe.entity.UserEntity</value>
-			<value>com.charu.recipe.entity.RecipeEntity</value>
-			<value>com.charu.recipe.entity.CategoryEntity</value>
-		</list>
-	    </property>
-	 </bean>
-	 <tx:annotation-driven />
-    <bean id="transactionManager"
-        class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-     
-     
+	<!-- Hibernate session factory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+
+		<property name="annotatedClasses">
+			<list>
+				<value>com.charu.recipe.entity.UserEntity</value>
+				<value>com.charu.recipe.entity.RecipeEntity</value>
+				<value>com.charu.recipe.entity.CategoryEntity</value>
+			</list>
+		</property>
+	</bean>
+	<tx:annotation-driven />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean id="configurationLoader"
+		class="org.springmodules.validation.bean.conf.loader.annotation.AnnotationBeanValidationConfigurationLoader" />
+	<bean id="validator" class="org.springmodules.validation.bean.BeanValidator"
+		p:configurationLoader-ref="configurationLoader" />
 
 </beans>
