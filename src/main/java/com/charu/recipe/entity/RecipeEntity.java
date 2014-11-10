@@ -32,6 +32,10 @@ public class RecipeEntity {
 	@JoinColumn
 	private CategoryEntity cookingcategory;
 	
+	@ManyToOne
+	@JoinColumn
+	private UserEntity user;
+	
 	@Column(name = "cuisine")
 	private String cuisine;
 	
@@ -104,6 +108,16 @@ public class RecipeEntity {
 
 	public void setIngredients(String ingredients) {
 		this.ingredients = ingredients;
+	}
+	
+	
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
 	@Override

@@ -7,11 +7,13 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.charu.recipe.entity.RecipeEntity;
+import com.charu.recipe.entity.UserEntity;
 
 @Repository
 public class RecipeDao {
@@ -71,5 +73,18 @@ public class RecipeDao {
 		return recipeEntities;
 	}
 	
+	
+	/**
+	 * Method to display user recipes 
+	 * @return
+	 */
+	@Transactional
+	public List<RecipeEntity> selectUserRecipes(UserEntity userEntity){
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(RecipeEntity.class, "recipe").createAlias(
+				"recipe.user", "user").add(Restrictions.eq("user.iduser", userEntity.getId()));
+		List<RecipeEntity> recipeEntities = (List<RecipeEntity>) criteria.list();
+		return recipeEntities;
+	}
 
 }

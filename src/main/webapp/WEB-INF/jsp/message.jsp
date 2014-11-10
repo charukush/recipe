@@ -8,5 +8,6 @@
 </head>
 <body>
 ${message }
+<a href="/recipe/charu/user/myaccount">GO TO MYACCOUNT</a>
 </body>
 </html>

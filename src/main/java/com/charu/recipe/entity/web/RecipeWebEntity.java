@@ -14,14 +14,18 @@ public class RecipeWebEntity {
 	@NotEmpty( message="Display message should not be blank")
 	private String displaymsg;
 	
+	@NotEmpty(message = "Instruction should not be blank")
 	private String instruction;
 	
+	@NotEmpty(message = "Cooking Time should not be blank")
 	private String cookingtime;
 	
-    private Long cookingcategory;
+	private Long cookingcategory;
     
+	@NotEmpty(message = "Cuisine should not be blank")
     private String cuisine;
     
+	@NotEmpty(message = "Ingredients should not be blank")
     private String ingredients;
 
 	public Long getIdrecipe() {

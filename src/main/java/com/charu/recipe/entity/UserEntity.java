@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name = "user")
 public class UserEntity {
@@ -14,12 +16,15 @@ public class UserEntity {
 	@GeneratedValue
 	private Long iduser;
 	
+	@NotEmpty(message = "Name should not be blank")
 	@Column(name = "name")
 	private String name;
 	
+	@NotEmpty(message = "Email should not be blank")
 	@Column(name = "email")
 	private String email;
 	
+	@NotEmpty(message = "Password should not be blank")
 	@Column(name = "password")
 	private String password;
 

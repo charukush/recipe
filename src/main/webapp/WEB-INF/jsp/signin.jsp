@@ -5,19 +5,40 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Recipe SignIn</title>
+<link rel="stylesheet" type="text/css" href="/recipe/css/style.css">
 </head>
 <body>
-<h2>User Log In</h2>
-<form:form method="POST" action="login">
+<div id="container">
+	<div id="header">
+		<h1>
+			Site name
+		</h1>
+	</div>
+	<div id="navigation">
+		<ul>
+			<li><a href="/recipe/charu/user/index">HOME</a></li>
+			<li><a href="#">ABOUT</a></li>
+			<li><a href="/recipe/charu/recipe/AllRecipes">RECIPES</a></li>
+			<li><a href="#">BLOG</a></li>
+			<li><a href="/recipe/charu/user/SignIn">LOGIN</a></li>
+			<li><a href="/recipe/charu/user/new">REGISTRATION</a></li>
+		</ul>
+	</div>
+	<div id="content-container">
+		<div id="content">
+			<h2>
+				Recipe SignIn
+			</h2>
+         <form:form method="POST" action="login">
 	
    <table>
     <tr>
         <td><form:label path="email">E-mail</form:label></td>
-        <td><form:input path="email" /></td>
+        <td><form:input path="email" /><form:errors path="email"></form:errors></td>
     </tr>
     <tr>
         <td><form:label path="password">Password</form:label></td>
-        <td><form:input path="password" /></td>
+        <td><form:password path="password" /><form:errors path="password"></form:errors></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -26,5 +47,15 @@
     </tr>
 </table>  
 </form:form>
+
+		</div>
+		<div id="aside">
+
+		</div>
+		<div id="footer">
+			Copyright © Site name, 20XX
+		</div>
+	</div>
+</div>
 </body>
 </html>

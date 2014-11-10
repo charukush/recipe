@@ -1,8 +1,10 @@
 package com.charu.recipe.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.charu.recipe.dao.CategoryDao;
 import com.charu.recipe.dao.RecipeDao;
+import com.charu.recipe.dao.UserDao;
 import com.charu.recipe.entity.CategoryEntity;
 import com.charu.recipe.entity.RecipeEntity;
 import com.charu.recipe.entity.UserEntity;
@@ -31,15 +34,22 @@ public class RecipeController {
 	@Autowired
 	private CategoryDao categoryDao;
 	
+	@Autowired
+	private UserDao userDao;
+	
 	
 	/**
 	 * 
 	 * @param model
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping("/newrecipe")
-	public String newrecipeform(Model model, HttpServletRequest request) {
+	public String newrecipeform(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("usersession");
+		if(userEntity == null){
+			response.sendRedirect("/recipe/charu/user/SignIn");
+		}
 		List<CategoryEntity> categories = categoryDao.getAll();
 		model.addAttribute("categorylist",categories);
 		model.addAttribute("userdisplay",userEntity);
@@ -56,7 +66,7 @@ public class RecipeController {
 	 */
 	@RequestMapping(value = "/newrecipeform", method = RequestMethod.POST)
 	public String newrecipeprocessform(@ModelAttribute("command") @Valid RecipeWebEntity recipeWebEntity ,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, Model model, HttpServletRequest request) {
 
 		if (bindingResult.hasErrors()) {
 			List<CategoryEntity> categories = categoryDao.getAll();
@@ -75,6 +85,8 @@ public class RecipeController {
 		recipeEntity.setIngredients(recipeWebEntity.getIngredients());
 		CategoryEntity categoryEntity = categoryDao.get(recipeWebEntity.getCookingcategory());
 		recipeEntity.setCookingcategory(categoryEntity);
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("usersession");
+		recipeEntity.setUser(userEntity);
 		//System.out.println(recipeEntity);
 		recipeDao.create(recipeEntity);
 		model.addAttribute("message", "Recipe created");
@@ -88,11 +100,13 @@ public class RecipeController {
 	 * @return
 	 */
 	@RequestMapping("/update-{idrecipe}")
-	public String update(@PathVariable Long idrecipe, Model model) {
+	public String update(@PathVariable Long idrecipe, Model model, HttpServletRequest request, HttpServletResponse response) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("usersession");
 		RecipeEntity recipeEntity = recipeDao.get(idrecipe);
 		List<CategoryEntity> categoryEntities = categoryDao.getAll();
 		model.addAttribute("categorylist",categoryEntities);
 		model.addAttribute("command",recipeEntity);
+		model.addAttribute("userdisplay",userEntity);
 		model.addAttribute("action","recipeupdatedform");
 		return "recipe";
 	}
@@ -103,9 +117,10 @@ public class RecipeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/recipeupdatedform", method = RequestMethod.POST)
-	public String recipeupdatedform(@ModelAttribute RecipeWebEntity recipeWebEntity, Model model) {
+	public String recipeupdatedform(@ModelAttribute RecipeWebEntity recipeWebEntity, Model model,HttpServletRequest request) {
 		System.out.println(recipeWebEntity);
 		RecipeEntity recipeEntity = new RecipeEntity();
+		
 		recipeEntity.setIdrecipe(recipeWebEntity.getIdrecipe());
 		recipeEntity.setTitle(recipeWebEntity.getTitle());
 		recipeEntity.setDisplaymsg(recipeWebEntity.getDisplaymsg());
@@ -115,6 +130,8 @@ public class RecipeController {
 		recipeEntity.setIngredients(recipeWebEntity.getIngredients());
 		CategoryEntity categoryEntity = categoryDao.get(recipeWebEntity.getCookingcategory());
 		recipeEntity.setCookingcategory(categoryEntity);
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("usersession");
+		recipeEntity.setUser(userEntity);
 		//System.out.println(recipeEntity);
 		recipeDao.update(recipeEntity);
 		model.addAttribute("message", "Recipe has been updated");
